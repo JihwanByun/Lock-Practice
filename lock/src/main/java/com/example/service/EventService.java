@@ -25,17 +25,6 @@ public class EventService {
         return new EventResponse(event.getId(), event.getTicketLimit());
     }
 
-    @Transactional
-    public TicketResponse createTicket(final Long eventId){
-        Event event = eventRepository.findById(eventId).orElseThrow();
-        if(event.isClosed()){
-            throw new RuntimeException("마감 되었습니다");
-        }
-
-        Ticket ticket = ticketRepository.save(new Ticket(event));
-
-        return new TicketResponse(ticket.getId());
-    }
 
 }
 

@@ -10,11 +10,7 @@ public class Ticket {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private Event event;
-
-    public Ticket(Event event){
-        this.event = event;
-    }
+    private String seatType;
+    private int totalStock;
+    private int sold;
 }
