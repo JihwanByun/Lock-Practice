@@ -34,5 +34,10 @@ public class TicketService {
         String userKey = "user:" + userId + ":tickets";
         Map<String, String> ticketData = redisTemplate.opsForHash().entries(userKey);
 
+        int currentSTickets = Integer.parseInt(ticketData.getOrDefault("S","0"));
+        int currentRTickets = Integer.parseInt(ticketData.getOrDefault("R","0"));
+
+        int totalTickets = currentRTickets + currentSTickets + sTickets + rTickets;
+        return totalTickets <= 5;
     }
 }

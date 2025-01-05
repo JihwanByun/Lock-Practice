@@ -6,6 +6,8 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisService {
@@ -14,11 +16,31 @@ public class RedisService {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    public boolean reduceStock(String key, int decrement) {
-        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setResultType(Long.class);
+    public boolean reduceStock(String ticketType, int quantity) {
+        String lockKey = "lock:stock:" + ticketType;
+        String stockKey = "stock:" + ticketType;
 
-        Long result = redisTemplate.execute(script, Collections.singletonList(key), decrement);
-        return result != null && result == 1;
+        String lockValue = UUID.randomUUID().toString();
+
+        try{
+            Boolean lockAcquired = redisTemplate.opsForValue().setIfAbsent(lockKey, lockValue, 10, TimeUnit.SECONDS);
+            if(Boolean.FALSE.equals(lockAcquired)){
+                return false;
+            }
+
+            Long newStock = redisTemplate.opsForValue().decrement(stockKey, quantity);
+            if(newStock < 0 ){
+                redisTemplate.opsForValue().increment(stockKey, quantity);
+                return false;
+            }
+            return true;
+
+        } finally {
+            String currentLockValue = redisTemplate.opsForValue().get(lockKey).toString();
+            if(lockValue.equals(currentLockValue)){
+                redisTemplate.delete(lockKey);
+            }
+        }
+
     }
 }
