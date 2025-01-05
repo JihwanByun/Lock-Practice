@@ -3,6 +3,8 @@ package com.example.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.Map;
+
 @Entity
 @Getter
 public class Ticket {
@@ -13,4 +15,5 @@ public class Ticket {
     private String seatType;
     private int totalStock;
     private int sold;
+
 }

@@ -13,14 +13,12 @@ public class RedisService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    public boolean reduceStock(String seatType, int quantity){
-        String stockKey = "ticket:stock:" + seatType;
-        String script =
-                "local stock = tonumber(redis.call('GET;, KEYS[1])) " +
-                        "if stock >= tonumber(ARGV[1]) then " +
-                        "redis.call('DECRBY',KEYS[1], ARGV[1]) return 1 else return 0 end";
-        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(script, Long.class);
-        Long result = redisTemplate.execute(redisScript, Collections.singletonList(stockKey), quantity);
-        return result == 1;
+
+    public boolean reduceStock(String key, int decrement) {
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setResultType(Long.class);
+
+        Long result = redisTemplate.execute(script, Collections.singletonList(key), decrement);
+        return result != null && result == 1;
     }
 }
