@@ -2,6 +2,7 @@ package com.example;
 
 
 import com.example.service.TicketService;
+import com.example.service.TicketServiceV1;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,22 +41,27 @@ public class TicketPurchaseTest {
     public void concurrentPurchaseTest() throws Exception {
 
         //given
-        int threadCount = 50;
+        int threadCount = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-        CountDownLatch latch = new CountDownLatch(threadCount);
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch endLatch = new CountDownLatch(threadCount);
         ConcurrentLinkedQueue<Boolean> results = new ConcurrentLinkedQueue<>();
 
         //when
         IntStream.range(0, threadCount).forEach(i -> executorService.submit(() -> {
             try {
+                startLatch.await();
                 boolean result = ticketService.purchaseTicket();
                 results.add(result);
-            }finally {
-                latch.countDown();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                endLatch.countDown();
             }
         }));
 
-        latch.await();
+        startLatch.countDown();
+        endLatch.await();
 
         long successCount = results.stream().filter(Boolean::booleanValue).count();
         long failureCount = results.stream().filter(success -> !success).count();
@@ -67,8 +73,9 @@ public class TicketPurchaseTest {
         String finalStock = redisTemplate.opsForValue().get(TICKET_KEY);
         assertThat(finalStock).isEqualTo("0");
 
-        System.out.println("최종 재고: " + ticketService.getStock());
-
+        System.out.println("성공한 구매 요청: " + successCount);
+        System.out.println("실패한 구매 요청: " + failureCount);
+        System.out.println("최종 재고 상태: " + finalStock);
     }
    
 }

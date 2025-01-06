@@ -4,6 +4,7 @@ package com.example.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -37,4 +38,7 @@ public class TicketService {
         String stock = redisTemplate.opsForValue().get(TICKET_KEY);
         return stock != null ? Integer.parseInt(stock) : 0;
     }
+
+
+
 }
