@@ -14,4 +14,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select t from Ticket t where t.id = :id")
     Optional<Ticket> findByIdWithPessimisticLock(@Param("id") Long id);
+
 }

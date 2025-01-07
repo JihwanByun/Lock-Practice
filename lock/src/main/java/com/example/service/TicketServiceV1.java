@@ -16,16 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketServiceV1 {
 
     private final TicketRepository ticketRepository;
+    static int count = 0;
 
     @Transactional
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void purchaseTicket(final Long id, final Long quantity){
-        Ticket ticket = ticketRepository.findByIdWithPessimisticLock(id).orElseThrow(
-                ()-> new CustomException("비관적락 오류", "오류")
-        );
+        Ticket ticket = ticketRepository.findById(id).orElseThrow();
         ticket.decrease(quantity);
         ticketRepository.save(ticket);
-        ticketRepository.flush();
     }
 
     public int getStock(Long id){

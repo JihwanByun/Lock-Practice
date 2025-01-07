@@ -12,13 +12,13 @@ import java.util.Map;
 @NoArgsConstructor
 public class Ticket {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String seatType;
 
-//    @Version
-//    private Long version;
+    //@Version
+    //private Long version;
 
     private Long totalStock;
     private int sold;
