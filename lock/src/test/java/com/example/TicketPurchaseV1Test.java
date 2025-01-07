@@ -42,16 +42,16 @@ public class TicketPurchaseV1Test {
 
         // when
         IntStream.range(0, threadCount).forEach(i -> executorService.submit(() -> {
-            try {
-                ticketServiceV1.purchaseTicket(1L, 1L); // 티켓 구매 시도
-            } finally {
-                latch.countDown(); // 작업 완료 카운트
-            }
+
+            ticketServiceV1.purchaseTicket(1L, 1L); // 티켓 구매 시도
+            latch.countDown(); // 작업 완료 카운트
+
         }));
 
         latch.await();
         // then
-        System.out.println("남은 재고: " + ticket.getTotalStock());
-        assertThat(ticket.getTotalStock()).isEqualTo(0L);
+        Ticket ticket1 = ticketRepository.findById(1L).orElseThrow();
+        System.out.println("남은 재고: " + ticket1.getTotalStock());
+        assertThat(ticket1.getTotalStock()).isEqualTo(0L);
     }
 }
