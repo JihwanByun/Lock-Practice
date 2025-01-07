@@ -43,4 +43,15 @@ public class RedisService {
         }
 
     }
+
+    public boolean isRequestAllowed(String userId){
+        String rateKey = "rate:user:" + userId;
+        Long requests =redisTemplate.opsForValue().increment(rateKey,1);
+
+        if(requests == 1){
+            redisTemplate.expire(rateKey, 1, TimeUnit.SECONDS);
+        }
+
+        return requests <= 10;
+    }
 }

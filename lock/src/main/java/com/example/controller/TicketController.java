@@ -2,42 +2,35 @@ package com.example.controller;
 
 
 import com.example.dto.ResponseDto;
-import com.example.service.KafkaProducer;
 import com.example.service.RedisService;
 import com.example.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/ticket")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
-    @Autowired
-    private RedisService redisService;
+    private final TicketService ticketService;
 
-    @Autowired
-    private KafkaProducer kafkaProducer;
-    @Autowired
-    private TicketService ticketService;
-
-
-    @PostMapping("/purchase")
-    public ResponseEntity<ResponseDto> purchaseTicket(
-        @RequestParam String userId,
-        @RequestParam String seatType,
-        @RequestParam int quantity) {
-
-
-        ticketService.purchaseTicket(userId,seatType,quantity);
-
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK, "예매 성공"));
-
-
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
+    @PostMapping("/purchase")
+    public ResponseEntity<String> purchaseTicket() {
+        boolean success = ticketService.purchaseTicket();
+        if (success) {
+            return ResponseEntity.ok("티켓 구매 성공!");
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("티켓 재고 부족");
+        }
+    }
+
+    @GetMapping("/stock")
+    public ResponseEntity<Integer> getStock() {
+        return ResponseEntity.ok(ticketService.getStock());
+    }
 }

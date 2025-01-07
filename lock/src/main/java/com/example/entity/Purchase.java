@@ -4,10 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 public class Purchase {
 
     @Id
@@ -19,4 +21,10 @@ public class Purchase {
     private int quantity;
     private LocalDateTime purchaseTime;
 
+
+    Purchase(String userId, String seatType, int quantity){
+        this.userId = userId;
+        this.seatType = seatType;
+        this.quantity = quantity;
+    }
 }
