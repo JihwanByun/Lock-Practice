@@ -16,15 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketServiceV1 {
 
     private final TicketRepository ticketRepository;
+    static int count = 0;
 
     @Transactional
     public void purchaseTicket(final Long id, final Long quantity){
         Ticket ticket = ticketRepository.findById(id).orElseThrow();
         ticket.decrease(quantity);
         ticketRepository.save(ticket);
-        ticketRepository.flush();
-        int i = 0;
-        System.out.println("flush" + i);
     }
 
     public int getStock(Long id){

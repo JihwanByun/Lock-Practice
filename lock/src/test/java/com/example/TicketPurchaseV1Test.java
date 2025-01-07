@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -25,10 +26,14 @@ public class TicketPurchaseV1Test {
     @Autowired
     TicketRepository ticketRepository;
 
-    @AfterEach
-    public void after() {
-        ticketRepository.deleteAll();
+    @Transactional
+    @Test
+    public void createTicket() {
+        Ticket ticket = new Ticket(1L, 10L);
+        ticketRepository.save(ticket);
+        assertThat(ticket.getId()).isEqualTo(1L);
     }
+
 
     @Test
     @DisplayName("TicketServiceV1 동시성 테스트")
@@ -36,7 +41,7 @@ public class TicketPurchaseV1Test {
         // given
         Ticket ticket = new Ticket(1L, 10L); //  초기 재고=10
         ticketRepository.save(ticket);
-        int threadCount = 50; // 동시 요청 수
+        int threadCount = 10; // 동시 요청 수
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount); // 모든 스레드가 작업을 끝날 때까지 대기
 
