@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7345f65d-a4fc-4839-9fcb-61feae2882ce" name="Changes" comment="" />
+    <list default="true" id="7345f65d-a4fc-4839-9fcb-61feae2882ce" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../lock/src/main/java/com/example/entity/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lock/src/main/java/com/example/entity/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lock/src/test/java/com/example/TicketPurchaseV1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lock/src/test/java/com/example/TicketPurchaseV1Test.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,9 +21,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2qKjqCFxsiGc0nh7dLfoeTdYzNW" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -32,7 +35,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "init",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/USER/OneDrive - 홍익대학교/바탕 화면/프로젝트/Lock-Practice/lock/build.gradle",
     "nodejs_package_manager_path": "npm",
@@ -66,6 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1734418351130</updated>
       <workItem from="1734418352121" duration="294000" />
+      <workItem from="1739104426033" duration="24000" />
     </task>
     <servers />
   </component>

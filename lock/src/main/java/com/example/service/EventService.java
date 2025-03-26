@@ -12,11 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class EventService {
 
     private final EventRepository eventRepository;
     private final TicketRepository ticketRepository;
+
+    public EventService(EventRepository eventRepository, TicketRepository ticketRepository) {
+        this.eventRepository = eventRepository;
+        this.ticketRepository = ticketRepository;
+    }
 
     @Transactional
     public EventResponse createEvent(Long eventTicket){

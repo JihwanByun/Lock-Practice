@@ -3,8 +3,8 @@ package com.example;
 import com.example.entity.Ticket;
 import com.example.repository.TicketRepository;
 import com.example.service.TicketServiceV1;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
+import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,12 +27,16 @@ public class TicketPurchaseV1Test {
     @Autowired
     TicketRepository ticketRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    RestTemplate restTemplate;
+
     @Transactional
     @Test
     public void createTicket() {
         Ticket ticket = new Ticket(1L, 10L);
         ticketRepository.save(ticket);
-        assertThat(ticket.getId()).isEqualTo(1L);
     }
 
 

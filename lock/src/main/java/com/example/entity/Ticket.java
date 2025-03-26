@@ -4,17 +4,17 @@ import com.example.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
+import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor
 public class Ticket {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue
     private Long id;
 
+    @Setter
     private String seatType;
 
     //@Version
@@ -36,4 +36,5 @@ public class Ticket {
         }
         this.totalStock -= count;
     }
+
 }
